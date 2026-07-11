@@ -638,6 +638,23 @@ a:visited {
     font-size: 40px;
   }
 
+  .input-row__label {
+    padding: 0 10px;
+    font-size: 10px;
+  }
+
+  .input-row__field {
+    padding: 12px 10px;
+    font-size: 15px;
+    min-width: 0;
+  }
+
+  .input-row__button {
+    padding: 0 12px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
   .key-metrics {
     grid-template-columns: repeat(2, 1fr);
   }
