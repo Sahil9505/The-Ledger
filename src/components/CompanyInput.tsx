@@ -25,7 +25,7 @@ export default function CompanyInput({ onSubmit, isLoading }: CompanyInputProps)
         id="company"
         className="input-row__field"
         type="text"
-        placeholder="e.g. Nvidia, Zomato, Tata Motors…"
+        placeholder="e.g. Nvidia, Apple, Tata Motors…"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={isLoading}
