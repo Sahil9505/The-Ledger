@@ -5,21 +5,8 @@ import Masthead from "@/components/Masthead";
 import CompanyInput from "@/components/CompanyInput";
 import TraceLog from "@/components/TraceLog";
 import ReportCard from "@/components/ReportCard";
-import type { TraceEntry, ResolvedCompany, Report, MarketData, SearchResult, FinancialData } from "@/agent/state";
-
-interface AnalyzeResponse {
-  companyName: string;
-  resolvedCompany?: ResolvedCompany;
-  report?: Report;
-  marketData?: MarketData;
-  financialData?: FinancialData;
-  trace: TraceEntry[];
-  sources?: {
-    overview?: SearchResult[];
-    news?: SearchResult[];
-    financials?: SearchResult[];
-  };
-}
+import HistoryPanel, { type HistoryEntry } from "@/components/HistoryPanel";
+import type { TraceEntry, AnalyzeResponse } from "@/agent/state";
 
 function SkeletonBlock({ height }: { height?: string }) {
   return <div className="skeleton" style={{ height: height || "16px" }} />;
@@ -77,6 +64,18 @@ export default function Home() {
   const traceRef = useRef<TraceEntry[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(false);
 
+  // Session-only history: held in memory, cleared on every refresh.
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const historyIdRef = useRef(0);
+  const [activeId, setActiveId] = useState<number | null>(null);
+
+  const handleSelectHistory = useCallback((entry: HistoryEntry) => {
+    setResult(entry.data);
+    setActiveId(entry.id);
+    setError(null);
+    setShowSkeleton(false);
+  }, []);
+
   const handleSubmit = useCallback(async (companyName: string) => {
     setIsLoading(true);
     setShowSkeleton(true);
@@ -84,6 +83,7 @@ export default function Home() {
     setResult(null);
     setLiveTrace([]);
     traceRef.current = [];
+    setActiveId(null);
 
     try {
       const res = await fetch("/api/analyze", {
@@ -119,7 +119,11 @@ export default function Home() {
               traceRef.current = [...traceRef.current, entry];
               setLiveTrace([...traceRef.current]);
             } else if (msg.type === "result") {
-              setResult(msg.data as AnalyzeResponse);
+              const data = msg.data as AnalyzeResponse;
+              const id = ++historyIdRef.current;
+              setResult(data);
+              setActiveId(id);
+              setHistory((prev) => [{ id, query: companyName, data }, ...prev]);
               setShowSkeleton(false);
             } else if (msg.type === "error") {
               setError((msg.error as string) || "Agent run failed.");
@@ -144,6 +148,7 @@ export default function Home() {
     <>
       <Masthead />
       <CompanyInput onSubmit={handleSubmit} isLoading={isLoading} />
+      <HistoryPanel entries={history} activeId={activeId} onSelect={handleSelectHistory} />
       <TraceLog trace={displayTrace} isLoading={isLoading} />
       {error && (
         <div className="error-note">

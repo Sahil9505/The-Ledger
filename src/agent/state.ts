@@ -116,6 +116,20 @@ export interface Report {
   dataQuality?: "strong" | "partial" | "limited";
 }
 
+export interface AnalyzeResponse {
+  companyName: string;
+  resolvedCompany?: ResolvedCompany;
+  report?: Report;
+  marketData?: MarketData;
+  financialData?: FinancialData;
+  trace: TraceEntry[];
+  sources?: {
+    overview?: SearchResult[];
+    news?: SearchResult[];
+    financials?: SearchResult[];
+  };
+}
+
 export interface AgentStateType {
   companyName: string;
   companyValidation?: CompanyValidation;

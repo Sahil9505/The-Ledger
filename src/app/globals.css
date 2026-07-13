@@ -163,6 +163,105 @@ a:visited {
   cursor: default;
 }
 
+/* ---------- Session history ---------- */
+.history {
+  margin: 16px 0 32px;
+}
+
+.history__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.history__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+}
+
+.history__item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.12s ease;
+}
+
+.history__item:last-child {
+  border-bottom: none;
+}
+
+.history__item:hover {
+  background: var(--paper);
+}
+
+.history__item--active {
+  background: var(--paper);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.history__verdict {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 4px 0;
+  border: 1px solid currentColor;
+}
+
+.history__verdict--invest {
+  color: var(--invest);
+}
+
+.history__verdict--pass {
+  color: var(--pass);
+}
+
+.history__company {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history__ticker {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.history__conf {
+  font-size: 12px;
+  color: var(--ink-soft);
+  min-width: 38px;
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .history__item {
+    grid-template-columns: 56px 1fr auto;
+  }
+  .history__ticker {
+    display: none;
+  }
+}
+
 /* ---------- Trace log ---------- */
 .trace {
   margin: 24px 0 40px;
