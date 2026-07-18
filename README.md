@@ -194,3 +194,4 @@ src/
 - `.next/`, `node_modules/`, `.cache/`, and `.env.local` are gitignored — they
   regenerate and must never be committed.
 - The repo's auto-generated zip (used for submission) excludes those paths.
+
